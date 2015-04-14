@@ -1,0 +1,5 @@
+In this Chapter Practice:
+1. upload.html
+   On the top of the page, show the whether of CA
+2. Allow user to upload file
+3. The uploaded file is synched to FTP server
