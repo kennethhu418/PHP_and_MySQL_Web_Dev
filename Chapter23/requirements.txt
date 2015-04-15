@@ -1,0 +1,5 @@
+For a user:
+1) He can login to the system.
+2) He can keep in the system among different pages during the navigation.
+3) He can view his orders in the database
+4) He can logout
