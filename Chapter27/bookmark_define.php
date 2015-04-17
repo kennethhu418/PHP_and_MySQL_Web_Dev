@@ -2,8 +2,8 @@
 
 class Bookmark{
     public $name;
-    public $owner;
     public $url;
+    public $urlID;
     public $visit_freq;
 }
 
