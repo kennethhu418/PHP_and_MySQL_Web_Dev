@@ -1,21 +1,35 @@
-create database bookmarks;
+create database Bookmark;
 
-use bookmarks;
+use Bookmark;
 
-create table user (
+create table User (
     username varchar(30) not null primary key,
-    passwd char(42) not null,
-    email char(100) not null
+    pwd char(42) not null,
+    email char(100) not null,
+    unique key (email),
+    index(email)
 );
 
-create table bookmark (
+create table Bookmark (
+    bookmarkid int(64) not null auto_increment,
     username varchar(30) not null,
-    bm_URL varchar(256) not null,
+    bookmarkname varchar(100) not null,
+    urlID int(64) unsigned not null,
+    visitfreq int(64) unsigned not null,
+
     index(username),
-    index(bm_URL),
-    primary key(username, bm_URL) 
+    index(bookmarkname),
+    index(urlID),
+    primary key(bookmarkid) 
+);
+
+create table URL (
+    urlID int(64) unsigned auto_increment not null,
+    url varchar(250) not null primary key,
+    visitfreq int(64) unsigned not null,
+    index(urlID)
 );
 
 grant select, insert, delete, update
-    on bookmarks.*
+    on Bookmark.*
     to 'kenneth' identified by 'kenneth';

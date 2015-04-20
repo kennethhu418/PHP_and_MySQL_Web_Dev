@@ -1,6 +1,6 @@
 <?php
-require('business_logic.php');
-require('htmloutput.php');
+require_once('business_logic.php');
+require_once('htmloutput.php');
 
 forcessl();
 login_detect();

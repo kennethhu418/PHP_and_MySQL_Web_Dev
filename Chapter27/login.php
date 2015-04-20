@@ -1,6 +1,6 @@
 <?php
-   require('config.php'); 
-   require('htmloutput.php');
+   require_once('business_logic.php'); 
+   require_once('htmloutput.php');
 
    forcessl();
    session_start();
@@ -20,6 +20,7 @@
            $pwd = $_POST['pwd'];
 
            validate_login($name, $pwd);
+           $_SESSION['username'] = $name;
            header("Location:".HOME_PAGE); 
        }
        catch(Exception $e) {

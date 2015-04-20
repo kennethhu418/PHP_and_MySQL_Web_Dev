@@ -1,6 +1,6 @@
 <?php
-   require('config.php'); 
-   require('htmloutput.php');
+   require_once('business_logic.php'); 
+   require_once('htmloutput.php');
 
    forcessl();
    session_start();
@@ -11,7 +11,7 @@
     exit;
    }
 
-   if(!isset($_POST['name']) && !isset($_POST['pwd']) && !isset($_POST['email'])) {
+   if(!isset($_POST['email'])) {
        compose_register_page();
    }
    else {
@@ -28,7 +28,6 @@
        }
        catch(Exception $e) {
            show_register_fail($e->getMessage());
-           show_error_message("Register Error: ".$e->getMessage());
        }
    }
 ?>

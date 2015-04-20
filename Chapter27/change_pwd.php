@@ -1,10 +1,8 @@
 <?php
-   require('config.php'); 
-   require('htmloutput.php');
+   require_once('business_logic.php'); 
+   require_once('htmloutput.php');
 
    forcessl();
-   session_start();
-
    login_detect();
 
    if(!isset($_POST['oldpwd']) && !isset($_POST['newpwd']) && !isset($_POST['newpwd_confirm'])) {

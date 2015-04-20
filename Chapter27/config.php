@@ -10,9 +10,11 @@ define('ADMIN_CONTACT_MAIL', 'dragon418@126.com');
 define('LOGIN_PAGE', 'login.php');
 define('REGISTER_PAGE', 'register.php');
 define('CHANGE_PWD_PAGE', 'change_pwd.php');
+define('BOOK_MARK_ADD_PAGE', 'add_bookmark.php');
 
 // Page Request Process Configuration
 define('LINK_PROCESSOR', 'link_process.php');
+define('DELETE_PROCESSOR', 'mark_delete_process.php');
 
 // Database Configuration
 define('DATABASE_ADDR', 'localhost');

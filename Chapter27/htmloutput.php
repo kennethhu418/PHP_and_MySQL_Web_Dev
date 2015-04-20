@@ -1,6 +1,5 @@
 <?php
-
-require('config.php');
+require_once('config.php');
 
 function show_header($title){
 ?>
@@ -18,13 +17,13 @@ function show_header($title){
         td.logo {
             width:20%;
         }
-        a::visited{
-            color:yellow;
+        a.menu{
+            color:white;
         }
     </style>
 </head>
 <body>
-<table align='center'>
+<table align='center' width="85%">
 <tr style="height:40px">
 <td rowspan="2" colspan="2" class="logo">
 <img src=<?php echo LOGO_PIC; ?>  style="width:40%;height:30%" />
@@ -35,10 +34,10 @@ function show_header($title){
 <td colspan="2" class="logo"><i>One Amazing Website for you to manage bookmarks</i><br/></td>
 </tr>
 <tr style="height:20px" align='center'>
-<td class='menu'><a href=<?php echo HOME_PAGE; ?>>Home</a></td>
-<td class='menu'><a href=<?php echo CHANGE_PWD_PAGE; ?>>ChangePwd</a></td>
-<td class='menu'><a href=<?php echo BOOKMARKS_PAGE; ?>>BookMarks</a></td>
-<td class='menu'><a href=<?php echo LOGOUT_PAGE; ?>>Logout</a></td>
+<td class='menu'><a class='menu' href=<?php echo HOME_PAGE; ?>>Home</a></td>
+<td class='menu'><a class='menu' href=<?php echo CHANGE_PWD_PAGE; ?>>ChangePwd</a></td>
+<td class='menu'><a class='menu' href=<?php echo BOOKMARKS_PAGE; ?>>BookMarks</a></td>
+<td class='menu'><a class='menu' href=<?php echo LOGOUT_PAGE; ?>>Logout</a></td>
 </tr>
 </table>
 <br/>
@@ -47,9 +46,9 @@ function show_header($title){
 
 function show_footer() {
 ?>
-<div style="position:absolute; bottom:2px; display:block;">
-<p>Kenneth Optimization Co., Ltd</p>
-<p>Contact: <a href="mailto:<?php echo ADMIN_CONTACT_MAIL; ?>"><i><?php echo ADMIN_CONTACT_MAIL; ?></i></a>"</p>
+<div style="position:absolute; bottom:0px; display:block; align:center"> 
+<p align='center' style="font-size:70%">Kenneth Optimization Co., Ltd</p>
+<p align='center' style="font-size:70%">Contact: <a href="mailto:<?php echo ADMIN_CONTACT_MAIL; ?>"><i><?php echo ADMIN_CONTACT_MAIL; ?></i></a>"</p>
 </div>
 </body>
 </html>
@@ -58,7 +57,7 @@ function show_footer() {
 
 function show_register() {
 ?>
-<h2 align='center'>User Login</h2>
+<h2 align='center'>User Register</h2>
 <form action=<?php echo REGISTER_PAGE; ?> method='post'>
 <table align='center'>
     <tr>
@@ -67,7 +66,7 @@ function show_register() {
     </tr>
     <tr>
         <td>Email:</td>
-        <td><input type='text' size="50" name='email'/></td>
+        <td><input type='text' size="25" name='email'/></td>
     </tr>
     <tr>
         <td>Password:</td>
@@ -117,7 +116,7 @@ function compose_register_page() {
 
 function compose_change_pwd_page() {
    show_header('Change Password'); 
-   show_change_pwd(); 
+   show_change_pwd(CHANGE_PWD_PAGE); 
    show_footer();
 }
 
@@ -127,7 +126,7 @@ function show_change_pwd_success($name) {
     show_footer();
 }
 
-function show_change_pwd_success($err) {
+function show_change_pwd_fail($err) {
     show_header('Change Password'); 
     echo "Password Change Fails: ".$err."<br/>";
     show_footer();
@@ -185,10 +184,31 @@ function show_login_warning() {
          "<a href=".LOGIN_PAGE.">Login</a><br/></p>";
 }
 
-function show_logout($username) {
-    echo "You have been logged out successfully, ".$username.".<br/><br/>";
+function show_logout() {
+    echo "You have been logged out successfully.<br/><br/>";
     echo "You can <a href=".LOGIN_PAGE.">Login</a> again.<br/>";
-    
+}
+
+function show_add_bookmark() {
+?>
+    <form action=<?php echo BOOK_MARK_ADD_PAGE;?> method='post'>
+        <table align='center'>
+        <caption>Add Bookmark</caption>
+        <tr>
+            <td>Bookmark Name:</td>
+            <td><input type='text' size='60px' name='name'/></td>
+        </tr>
+        <tr>
+            <td>Bookmark URL:</td>
+            <td><input type='text' size='60px' name='url'/></td>
+        </tr>
+        <tr>
+            <td colspan='2' align='center'><input type='submit' name='submit' value='Add'/></td>
+        </tr>
+        </table>
+    </form>
+    <br/>
+<?php
 }
 
 /************************************************************************
@@ -196,62 +216,91 @@ function show_logout($username) {
  * bookmark_icon   bookmark_name url <submit_button>submit_show_name
  * When a user press the submit button, the process_script would be called
  * Each submit button has a name and the name pattern is 'submit_xxx', where
- * xxx can be a bookmarkname or a urlID, which is specified by the
+ * xxx can be a bookmarkid or a urlID, which is specified by the
  * $form_bookmarkname variable.
  ***********************************************************************/
 function show_bookmarks($title, $bookmark_arr, $process_script, $submit_show_name, $form_bookmarkname = true) {
 ?>
-    <table align='center'> 
+    <form method='post' action=<?php echo $process_script; ?>>
+    <table align='center' border='1' width="85%"> 
     <tr align='center'>
-        <td style="width:20%" colspan="3"><?php echo $title; ?></td>
+        <td style="width:20%" colspan="3"><b><?php echo $title; ?></b></td>
     </tr>
 <?php
     for($i = 0; $i < count($bookmark_arr); ++$i) {
         echo '<tr align="center">';
-        echo '<td style="width:20%">';
-        echo '<img src='.BOOKMARK_ICON.'/> '.$bookmark_arr[$i]->name.
+        echo '<td style="width:10%">';
+        echo '<img style="width:7%" src="'.BOOKMARK_ICON.'"/> '.$bookmark_arr[$i]->name.
+             ' </td>';
+        echo '<td style="width:30%">';
+        echo $bookmark_arr[$i]->url.'</td>';
+        if($form_bookmarkname) {
+            echo '<td style="width:5%">'.
+                 '<button type="submit" name="submit_'.
+                 $bookmark_arr[$i]->ID.
+                 '">'.$submit_show_name.'</button>'.
+                 '</td>';
+        }
+        else {
+            echo '<td style="width:5%">'.
+                 '<button type="submit" name="submiturl_'.
+                 $bookmark_arr[$i]->urlID.
+                 '">'.$submit_show_name.'</button>'.
+                 '</td>';
+        }
+
+        echo '</tr>';
+    }
+?>
+    </table>
+    </form>
+    <br />
+<?php
+}
+
+function show_manageble_bookmarks($title, $bookmark_arr) {
+?>
+    <form action=<?php echo LINK_PROCESSOR;?> method='post'>
+    <table align='center' border='1' width="85%"> 
+    <tr align='center'>
+        <td style="width:20%" colspan="3"><b><?php echo $title; ?></b></td>
+    </tr>
+<?php
+    for($i = 0; $i < count($bookmark_arr); ++$i) {
+        echo '<tr align="center">';
+        echo '<td style="width:15%">';
+        echo '<img style="width:7%" src=\''.BOOKMARK_ICON.'\'/> '.$bookmark_arr[$i]->name.
              '</td>';
-        echo '<td style="width:35%">';
+        echo '<td style="width:30%">';
         echo $bookmark_arr[$i]->url.'</td>';
         echo '<td style="width:5%">'.
-             '<form action="'.$process_script.'" method="post">'.
-             '<input type="submit" value="'.$submit_show_name.'" name="submit_'.
-             ($form_bookmarkname ? $bookmark_arr[$i]->name : $bookmark_arr[$i]->urlID).
-             '" />'.
-             '</form>'.
+             '<button type="submit" name="submit_'.$bookmark_arr[$i]->ID.
+             '">Go</button> '.
+             '<button type="submit" name="submit_'.$bookmark_arr[$i]->ID.
+             '" formaction="'.DELETE_PROCESSOR.'">Del</button>'.
              '</td>';
         echo '</tr>';
     }
 ?>
     </table>
+    </form>
     <br />
 <?php
 }
 
-function show_add_bookmark($process_script) {
-?>
-    <h2 align='center'>User Login</h2>
-    <form action=<?php echo $process_script; ?> method='post'>
-    <table align='center'>
-        <tr>
-            <td>Bookmark Name:</td>
-            <td><input type='text' size="40" name='name'/></td>
-        </tr>
-        <tr>
-            <td>URL:</td>
-            <td><input type='text' size="40" name='URL'/></td>
-        </tr>
-        <tr>
-            <td colspan='2' align='center'><input type='submit' name='submit' value="Add"></td>
-        </tr>
-    </table>
-    </form>
-<?php
+function show_bookmark_added($markname, $markurl) {
+    echo "Congratulations, you have successfully added the new bookmark.<br/>";
+    echo "Name: ".htmlspecialchars($markname)."<br/>";
+    echo "URL : ".htmlspecialchars($markurl)."<br/>";
 }
+
+function show_bookmark_deleted() {
+    echo "Congratulations, you have successfully deleted the bookmark.<br/>";
+}
+
 
 function show_error_message($message) {
     echo '<p><i>Woops, there is something wrong: <br/></i></p>'.$message.'<br/>';
 }
-
 
 ?>
